@@ -1,0 +1,18 @@
+.data{
+    font-family: 'Raleway', sans-serif;
+}
+header{
+    text-align: center;
+}
+
+canvas{
+    border: 1px solid black;
+}
+
+.row{
+    display: flex;
+}
+
+.column{
+    flex: 50%;
+}
