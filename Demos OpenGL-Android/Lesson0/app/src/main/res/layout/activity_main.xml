@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Hello World!"
+        android:background="#AAFF2277"
+        android:id="@+id/TV1"
+        android:layout_gravity="center_horizontal|center_vertical|center"
+        android:gravity="center_horizontal|center_vertical|center"
+        />
+
+    <!-- -->
+    <android.opengl.GLSurfaceView
+        android:id="@+id/OpenGL1_surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:layout_gravity="center" />
+
+
+</LinearLayout>
