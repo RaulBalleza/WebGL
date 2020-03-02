@@ -1,0 +1,23 @@
+/*
+@import url('https://fonts.googleapis.com/css?family=Raleway|Roboto&display=swap');
+.data {
+    font-family: 'Raleway', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+*/
+
+header {
+    text-align: center;
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+.row {
+    display: flex;
+}
+
+.column {
+    flex: 50%;
+}
