@@ -49,6 +49,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button B3 = findViewById(R.id.btn3);
+        B3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //BX.setVisibility(View.INVISIBLE);
+                //BY.setVisibility(View.INVISIBLE);
+                customCanvas.clearCanvas();
+            }
+        });
+
         //setContentView(R.layout.activity_main);
         mGLSurfaceView = findViewById(R.id.OpenGL1_surfaceView);
         mGLSurfaceView.setEGLContextClientVersion(2);

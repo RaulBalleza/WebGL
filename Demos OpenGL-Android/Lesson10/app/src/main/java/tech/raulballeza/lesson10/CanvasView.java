@@ -59,6 +59,12 @@ public class CanvasView extends View {
         super.onDraw(canvas);
         // draw the mPath with the mPaint on the canvas when onDraw
         canvas.drawPath(mPath, mPaint);
+        mPaint.setColor(Color.WHITE);
+        mPaint.setStrokeWidth(2f);
+        canvas.drawRect(10,10,200,200,mPaint);
+        mPaint.setTextSize(50f);
+        canvas.drawText("Hola Mundo",70,70,mPaint);
+
     }
 
     // when ACTION_DOWN start touch according to the x,y values
