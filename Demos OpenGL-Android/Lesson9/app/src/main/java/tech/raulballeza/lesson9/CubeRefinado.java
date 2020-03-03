@@ -216,14 +216,15 @@ public class CubeRefinado {
         String line;
         StringBuffer buf = new StringBuffer();
         //InputStream is = context.getResources().openRawResource(R.raw.torusmejx);
-        //InputStream is = context.getResources().openRawResource(R.raw.cubo_simple);
+        InputStream is = context.getResources().openRawResource(R.raw.cubo_simple);
         //InputStream is = context.getResources().openRawResource(R.raw.icosaedro_final);
         //InputStream is = context.getResources().openRawResource(R.raw.cilindro);
         //InputStream is = context.getResources().openRawResource(R.raw.cono);
         //InputStream is = context.getResources().openRawResource(R.raw.dona);
         //InputStream is = context.getResources().openRawResource(R.raw.rounded_cube);
         //InputStream is = context.getResources().openRawResource(R.raw.chango_marango);
-        InputStream is = context.getResources().openRawResource(R.raw.avioneta);
+        //InputStream is = context.getResources().openRawResource(R.raw.avioneta);
+
 
 
 
