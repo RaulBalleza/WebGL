@@ -1,7 +1,9 @@
 package com.example.lesson13;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
@@ -29,6 +31,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,7 +41,9 @@ import java.io.OutputStream;
 
 
 //public class MainActivity extends AppCompatActivity   implements  PictureCallback    {
-public class MainActivity extends Activity implements PictureCallback    {
+public class MainActivity extends Activity implements PictureCallback {
+
+    private static final int REQUEST_ID_CAMERA_PERMISSION = 100;
 
     CameraSurfaceView cameraSurfaceView;
     Button shutterButton;
@@ -47,8 +53,7 @@ public class MainActivity extends Activity implements PictureCallback    {
     private CubeRenderer mRenderer;
     FrameLayout preview;
 
-    private int getRotacion (int rotation)
-    {
+    private int getRotacion(int rotation) {
         int angle;
         switch (rotation) {
             case Surface.ROTATION_90:
@@ -71,13 +76,14 @@ public class MainActivity extends Activity implements PictureCallback    {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        askPermissionOnly();
 
         //this.requestWindowFeature()
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        int rotation =  getWindowManager().getDefaultDisplay().getRotation();
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
         TextView TV1 = findViewById(R.id.TV_info);
-        TV1.setText("Angulo : "+ getRotacion(rotation));
+        TV1.setText("Angulo : " + getRotacion(rotation));
 
         // set up our preview surface
         preview = (FrameLayout) findViewById(R.id.camera_preview);
@@ -90,7 +96,7 @@ public class MainActivity extends Activity implements PictureCallback    {
         mGLView = findViewById(R.id.OpenGL_preview);
         mGLView.setEGLContextClientVersion(2);
         mGLView.setZOrderOnTop(true);
-        mGLView.setEGLConfigChooser(8,8,8,8,16,0);
+        mGLView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         //mGLView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         mGLView.getHolder().setFormat(PixelFormat.RGBA_8888);
 
@@ -125,7 +131,6 @@ public class MainActivity extends Activity implements PictureCallback    {
         shutterButton.setEnabled(true);
 
 
-
     }
 
     private class SaveImageTask extends AsyncTask<byte[], Void, String> {
@@ -138,7 +143,7 @@ public class MainActivity extends Activity implements PictureCallback    {
             // Write to SD Card
             try {
                 File sdCard = Environment.getExternalStorageDirectory();
-                File dir = new File (sdCard.getAbsolutePath() + "/camtest");
+                File dir = new File(sdCard.getAbsolutePath() + "/camtest");
                 dir.mkdirs();
 
                 String fileName = String.format("%d.jpg", System.currentTimeMillis());
@@ -150,8 +155,7 @@ public class MainActivity extends Activity implements PictureCallback    {
                 outStream.close();
 
                 // Enviar al servidor !!!
-                imagePath =  outFile.getAbsolutePath();
-
+                imagePath = outFile.getAbsolutePath();
 
 
                 refreshGallery(outFile);
@@ -166,7 +170,7 @@ public class MainActivity extends Activity implements PictureCallback    {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(),"Se guardo el archivo: "+result,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Se guardo el archivo: " + result, Toast.LENGTH_SHORT).show();
 
         }
 
@@ -174,12 +178,58 @@ public class MainActivity extends Activity implements PictureCallback    {
     }
 
 
-
     private void refreshGallery(File file) {
-        Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         mediaScanIntent.setData(Uri.fromFile(file));
         sendBroadcast(mediaScanIntent);
     }
 
+    // Funcionaes de Permisos
+    private void askPermissionOnly() {
+        this.askPermission(REQUEST_ID_CAMERA_PERMISSION,
+                Manifest.permission.CAMERA);
+        this.askPermission(REQUEST_ID_CAMERA_PERMISSION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
+
+    // With Android Level >= 23, you have to ask the user
+    // for permission with device (For example read/write data on the device).
+    private boolean askPermission(int requestId, String permissionName) {
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            // Check if we have permission
+            int permission = ActivityCompat.checkSelfPermission(this, permissionName);
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // If don't have permission so prompt the user.
+                this.requestPermissions(
+                        new String[]{permissionName},
+                        requestId
+                );
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // When you have the request results
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //
+        // Note: If request is cancelled, the result arrays are empty.
+        if (grantResults.length > 0) {
+            switch (requestCode) {
+                case REQUEST_ID_CAMERA_PERMISSION: {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(getApplicationContext(), "Permission Lectura Concedido!", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "Permission Cancelled!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }
